@@ -1,5 +1,5 @@
 ﻿using Edu.PXU.API.App.Interface;
-using Edu.PXU.API.Model;
+using Edu.PXU.API.Model.Category;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Edu.PXU.API.Controllers
