@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Edu.PXU.API.props" />
+</Project>

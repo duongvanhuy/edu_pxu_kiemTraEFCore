@@ -1,0 +1,14 @@
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\bin\Debug\net6.0\Edu.PXU.EntityFECore.deps.json
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\bin\Debug\net6.0\Edu.PXU.EntityFECore.runtimeconfig.json
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\bin\Debug\net6.0\Edu.PXU.EntityFECore.dll
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\bin\Debug\net6.0\Edu.PXU.EntityFECore.pdb
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.csproj.AssemblyReference.cache
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.GeneratedMSBuildEditorConfig.editorconfig
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.AssemblyInfoInputs.cache
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.AssemblyInfo.cs
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.csproj.CoreCompileInputs.cache
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.dll
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\refint\Edu.PXU.EntityFECore.dll
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.pdb
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\Edu.PXU.EntityFECore.genruntimeconfig.cache
+D:\Documents\trainning-net\Edu.PXU.KiemTraEFCore\Edu.PXU.EntityFECore\obj\Debug\net6.0\ref\Edu.PXU.EntityFECore.dll
