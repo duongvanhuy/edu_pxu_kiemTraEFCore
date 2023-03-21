@@ -9,9 +9,11 @@ namespace Edu.PXU.API.App.Interface
         ICategoryRepository CategoryRepository { get; }
         IProductImageRepository ProductImageRepository { get; }
         IImageRepository ImageRepository { get; }
+        IUserIdentityRepository UserIdentityRepository { get; }
 
 
         void SaveChanges();
+        Task SaveChangesAsync();
         void CreateTransaction();
         void Commit();
         void Rollback();

@@ -1,4 +1,6 @@
 ﻿using Edu.PXU.EntityFECore.Entity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -8,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Edu.PXU.EntityFECore.Data
 {
-    public class PXUDBContext : DbContext
+    public class PXUDBContext : IdentityDbContext<UserIdentity, Role, string>
     {
 
         public PXUDBContext(DbContextOptions options) : base(options)
@@ -22,22 +24,36 @@ namespace Edu.PXU.EntityFECore.Data
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProductImage>()
-                 .HasKey(pi => new { pi.IdProduct, pi.IdImage });
+       .HasKey(pi => new { pi.IdProduct, pi.IdImage });
 
             modelBuilder.Entity<ProductImage>()
                  .HasOne(p => p.Product)
                  .WithMany(i => i.ProductImages)
-                 .HasForeignKey(k => k.IdProduct);
-            
+                 .HasForeignKey(k => k.IdProduct)
+                 .OnDelete(DeleteBehavior.Cascade); // thêm phương thức OnDelete
+
             modelBuilder.Entity<ProductImage>()
                 .HasOne(p => p.Image)
                 .WithMany(i => i.ProductImages)
-                .HasForeignKey(k => k.IdImage);
+                .HasForeignKey(k => k.IdImage)
+                .OnDelete(DeleteBehavior.Cascade); // thêm phương thức OnDelete
 
             modelBuilder.Entity<Product>()
                 .HasOne(p => p.Category)
                 .WithMany(c => c.Products)
                 .HasForeignKey(k => k.IdCategory);
+
+            modelBuilder.Entity<Product>()
+               .HasMany(p => p.ProductImages)
+               .WithOne(pi => pi.Product)
+               .OnDelete(DeleteBehavior.Cascade);
+
+            modelBuilder.Entity<Image>()
+                .HasMany(i => i.ProductImages)
+                .WithOne(pi => pi.Image)
+                .OnDelete(DeleteBehavior.Cascade); // thêm phương thức OnDelete
+
+            base.OnModelCreating(modelBuilder);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Edu.PXU.API.App.Interface;
 using Edu.PXU.EntityFECore.Data;
 using Microsoft.EntityFrameworkCore.Storage;
+using System.Data;
 
 namespace Edu.PXU.API.App
 {
@@ -11,44 +12,66 @@ namespace Edu.PXU.API.App
         public ICategoryRepository CategoryRepository { get; }
         public IProductImageRepository ProductImageRepository { get; }
         public IImageRepository ImageRepository { get; }
+        public IUserIdentityRepository UserIdentityRepository { get; }
 
-      //  private DbContextTransaction _transaction;
+        private IDbContextTransaction _transaction;
 
-        public UnitOfWork(PXUDBContext context ,IProductRepository productRepository, ICategoryRepository categoryRepository, IProductImageRepository productImageRepository, IImageRepository imageRepository)
+        public UnitOfWork(PXUDBContext context ,IProductRepository productRepository,
+            ICategoryRepository categoryRepository,
+            IProductImageRepository productImageRepository,
+            IImageRepository imageRepository,
+            IUserIdentityRepository userIdentityRepository)
         {
             _context = context;
             ProductRepository = productRepository;
             CategoryRepository = categoryRepository;
             ProductImageRepository = productImageRepository;
             ImageRepository = imageRepository;
+            UserIdentityRepository = userIdentityRepository;
         }
         public void Commit()
         {
             try
             {
                 _context.SaveChanges();
-            //    _transaction.Commit();
+                if (_transaction != null)
+                {
+                    _transaction.Commit();
+                    _transaction = null;
+                }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-            //    _transaction.Rollback();
-                throw;
+                Rollback();
+                throw ex;
             }
         }
 
         public void CreateTransaction()
         {
-            throw new NotImplementedException();
+            if (_transaction == null)
+            {
+                _transaction = _context.Database.BeginTransaction();
+            }
         }
 
         public void Rollback()
         {
-            throw new NotImplementedException();
+            if (_transaction != null)
+            {
+                _transaction.Rollback();
+                _transaction = null;
+            }
         }
 
         public void SaveChanges()
         {
             _context.SaveChanges();
+        }
+
+        public async Task SaveChangesAsync()
+        {
+           await _context.SaveChangesAsync();
         }
     }
 }

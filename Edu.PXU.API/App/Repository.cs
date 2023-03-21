@@ -1,6 +1,7 @@
 ﻿using Edu.PXU.API.App.Interface;
 using Edu.PXU.EntityFECore.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using System.Linq.Expressions;
 
 namespace Edu.PXU.API.App
@@ -15,63 +16,124 @@ namespace Edu.PXU.API.App
             _context = context;
             _dbSet = _context.Set<T>();
         }
-        
-        public T Create(T t)
+
+        public async Task<T> CreateAsync(T t)
         {
-            _context.Set<T>();
-            _context.SaveChanges();
+            await _context.Set<T>().AddAsync(t);
             return t;
         }
 
-        public void Delete(T entity)
+        public void Delete(string id)
         {
-            _context.Remove(entity);
-            _context.SaveChanges();
-
+            var ent = _context.Set<T>().Find(id);
+            _context.Remove(ent);
+            
         }
 
-        public T? Get(int id)
+        public async Task<T?> GetByIdAsync(string id)
         {
-            return _context.Set<T>().Find(id);
+            return await _context.Set<T>().FindAsync(id);
+        }
+        
+
+        public IEnumerable<T> GetAll<TProperty>(Expression<Func<T, bool>> match,
+             int pageSize, int pageIndex,
+             out int total,
+             Func<IQueryable<T>,
+             IIncludableQueryable<T, object>>? include = null,
+             bool disableTracking = true,
+             bool ignoreQueryFilters = false)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (ignoreQueryFilters)
+            {
+                query = query.IgnoreQueryFilters();
+            }
+
+            if (disableTracking)
+            {
+                query = query.AsNoTracking();
+            }
+
+            if (match != null)
+            {
+                query = query.Where(match);
+            }
+            if (include != null)
+            {
+                query = include(query);
+            }
+            total = query.Count();
+
+            if (pageSize > 0)
+            {
+                query = query.Skip((pageIndex - 1) * pageSize).Take(pageSize);
+            }
+
+            return query.ToList();
         }
 
-        public ICollection<T> Get(Expression<Func<T, bool>> match)
-        {
-            return _context.Set<T>().Where(match).ToList();
-        }
-
-        public ICollection<T> Get(Expression<Func<T, bool>> match, int pageSize, int pageIndex, out int total)
-        {
-            // Lấy tất cả các phần tử phù hợp với điều kiện lọc
-            var filteredElements = _context.Set<T>().Where(match.Compile());
-
-            // Đếm tổng số phần tử trong bộ sưu tập
-            total = filteredElements.Count();
-
-            // Lấy các phần tử cho trang hiện tại bằng cách sử dụng phân trang
-            var pageElements = filteredElements.Skip(pageSize * (pageIndex - 1)).Take(pageSize);
-
-            // Trả về các phần tử của trang hiện tại dưới dạng ICollection<T>
-            return pageElements.ToList();
-        }
-
-        public T? Update(T t, object key)
+        public async  Task<T?> Update(T t, object key)
         {
             T? exist = _context.Set<T>().Find(key);
 
             if (exist != null)
             {
                 _context.Entry(exist).CurrentValues.SetValues(t);
-                _context.SaveChanges();
             }
 
             return exist;
         }
-        
-        public ICollection<T> GetAll()
+
+        public IEnumerable<T> GetAll(Expression<Func<T, bool>> match)
         {
-            return _context.Set<T>().ToList();
+            IQueryable<T> query = _dbSet;
+
+            if (match != null)
+            {
+                query = query.Where(match);
+            }
+
+            return query.ToList();
         }
 
+
+        public async Task<IEnumerable<T>> GetAllAsync()
+        {
+            
+            return await _context.Set<T>().ToListAsync();
+        }
+
+        public async Task CreateAsync(ICollection<T> t)
+        {
+            await _context.Set<T>().AddRangeAsync(t);
+        }
+
+        public async Task<IEnumerable<T>> GetAllIncludeAsync(Expression<Func<T, bool>> match, Func<IQueryable<T>, IIncludableQueryable<T, object>> include)
+        {
+            IQueryable<T> query = _dbSet;
+
+            if (match != null)
+            {
+                query = query.Where(match);
+            }
+            if (include != null)
+            {
+                query = include(query);
+            }
+            
+            return await query.ToListAsync();
+        }
+
+        public void Remove(T t)
+        {
+            _context.Set<T>().RemoveRange(t);
+        }
+
+        public void RemoveAll(ICollection<T> t)
+        {
+            _context.Set<T>().RemoveRange(t);
+        }
     }
 }
